@@ -1,0 +1,47 @@
+{% set name = "filtration-domination" %}
+{% set version = "0.1.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/aj-alonso/filtration_domination/archive/refs/tags/python-v{{ version }}.tar.gz
+  sha256: 94cdbcb870d69c328b4d7309811c9582e70cefc6f2bc2e0ca385ce59e1f41e6c
+
+build:
+  number: 0
+  skip: true  # [py<36]
+
+requirements:
+  build:
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - maturin                                # [build_platform != target_platform]
+    - {{ compiler('c') }}
+    - {{ compiler('rust') }}
+    - cargo-bundle-licenses
+  host:
+    - python
+    - pip
+    - maturin
+  run:
+    - click
+
+test:
+  imports:
+    - filtration_domination
+  commands:
+    - pip check
+
+about:
+  home: https://github.com/lancedb/lance
+  summary: Filtration-domination algorithms
+  license: MIT
+  license_file:
+    - LICENSE-MIT
+    - THIRDPARTY.yml
+
+extra:
+  recipe-maintainers:
+    - yhori991
